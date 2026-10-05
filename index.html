@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A²E Lab: Research Mixer 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F4F6F9;--ink:#141D29;--ink2:#4A5566;--ink3:#7F8B9A;--rule:#D6DDE5;--soft:#E7ECF2;--soft2:#D9E0E8;--sheet:#FFFFFF;--line:#D3DAE2;--shadow:rgba(15,25,40,.14);
+--ai:#2C59D4;--ai-soft:#DCE5FB;--art:#9C8766;--art-soft:#EFE8DC;--det:#8A939E;--det-soft:#E1E5EA;
+--ev:#B87900;--re:#7A3E9D;--rs:#0E7A73;--ev-soft:#F7EACB;--re-soft:#EDE1F4;--rs-soft:#D5EEEA;--on-ink:#F4F6F9;--on-c:#FFFFFF;
+--night:#101925;--night-ink:#F3F6FA;--night-ink2:#A9B6C6;--letter:#C7CFD9;
+--sans:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;--serif:"Newsreader",Georgia,"Times New Roman",serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#0F151D;--ink:#EBF0F5;--ink2:#AEB9C6;--ink3:#7D8998;--rule:#2A3441;--soft:#18212B;--soft2:#222D39;--sheet:#1D2631;--line:#364251;--shadow:rgba(0,0,0,.45);
+--ai:#7E9DF3;--ai-soft:#1D2B48;--art:#C9B596;--art-soft:#2B2620;--det:#7F8994;--det-soft:#252C35;--ev:#E8AA2E;--re:#BE8BDE;--rs:#3CBDB2;--ev-soft:#3A2E12;--re-soft:#2E2138;--rs-soft:#12302D;--on-ink:#0F151D;--on-c:#0F151D;--night:#080D13;--letter:#05080C}}
+:root[data-theme="dark"]{--paper:#0F151D;--ink:#EBF0F5;--ink2:#AEB9C6;--ink3:#7D8998;--rule:#2A3441;--soft:#18212B;--soft2:#222D39;--sheet:#1D2631;--line:#364251;--shadow:rgba(0,0,0,.45);
+--ai:#7E9DF3;--ai-soft:#1D2B48;--art:#C9B596;--art-soft:#2B2620;--det:#7F8994;--det-soft:#252C35;--ev:#E8AA2E;--re:#BE8BDE;--rs:#3CBDB2;--ev-soft:#3A2E12;--re-soft:#2E2138;--rs-soft:#12302D;--on-ink:#0F151D;--on-c:#0F151D;--night:#080D13;--letter:#05080C}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{height:100%;margin:0;background:var(--letter);overflow:hidden;-webkit-font-smoothing:antialiased}
+.vp{position:relative;width:100%;height:100%;overflow:hidden;outline:none}
+.deck{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;background:var(--paper);color:var(--ink);font:400 28px/1.42 var(--sans);overflow:hidden}
+.slide{position:absolute;inset:0;box-sizing:border-box;padding:80px 104px 120px;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .4s ease,visibility 0s linear .4s}
+.slide.on{opacity:1;visibility:visible;transition:opacity .4s ease}
+.body{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0;padding-bottom:28px}
+h1,h2,h3,.serif{font-family:var(--serif);font-weight:600;margin:0}
+h2{font-size:60px;line-height:1.08;letter-spacing:-.012em;margin-bottom:44px;max-width:1340px;text-wrap:balance}
+p,figure{margin:0}
+.lead{font-size:30px;color:var(--ink2);max-width:1150px}
+.small{font-size:21px;color:var(--ink3)}
+.note{position:absolute;left:104px;right:104px;bottom:86px;font-size:19px;color:var(--ink3)}
+svg{display:block;overflow:visible}
+svg text{font-family:var(--sans)}
+.mk{fill:var(--ink3)}
+.b{opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s ease}
+.b.in{opacity:1;transform:none}
+.bx{transition:opacity .35s ease}.bx.out{opacity:0}
+.foot{position:absolute;left:104px;right:104px;bottom:34px;display:flex;align-items:center;gap:28px;font-size:18px;color:var(--ink3);transition:opacity .3s}
+.foot.hide{opacity:0}
+.fp{min-width:250px}
+.track{flex:1;display:flex;gap:6px;height:4px}
+.track i{display:block;height:100%;border-radius:2px;background:var(--soft2)}
+.track i.done{background:var(--ink3)}.track i.cur{background:var(--ink)}
+.fn{min-width:36px;text-align:right;font-variant-numeric:tabular-nums}
+.ctl{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;opacity:0;transition:opacity .3s;z-index:5}
+.ctl.show,.ctl:focus-within{opacity:1}
+.ctl button{font:600 15px/1 system-ui,-apple-system,"Segoe UI",sans-serif;color:#fff;background:rgba(20,29,41,.84);border:0;border-radius:6px;padding:10px 14px;cursor:pointer}
+.ctl button:focus-visible{outline:2px solid #7E9DF3;outline-offset:2px}
+.hint{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0px));transform:translateX(-50%);background:rgba(20,29,41,.92);color:#fff;font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;padding:10px 16px;border-radius:6px;width:max-content;max-width:calc(100% - 32px);text-align:center;transition:opacity .6s;z-index:6}
+.hint.off{opacity:0;pointer-events:none}
+@media (prefers-reduced-motion:reduce){.slide,.b,.bx,.foot,.hint{transition:none}.b{transform:none}}
+
+/* ---------- presenter view ---------- */
+.notes{display:none}
+.pv{display:none}
+body.presenter{background:#0B1017}
+body.presenter .vp{position:absolute;left:20px;top:20px;width:calc(62% - 30px);height:calc(100% - 40px)}
+body.presenter .ctl,body.presenter .hint{display:none}
+body.presenter .pv{display:grid;position:absolute;top:20px;right:20px;bottom:20px;width:calc(38% - 30px);grid-template-rows:auto auto auto auto 1fr;gap:12px;color:#E8EDF3;font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.pv-bar{display:flex;align-items:center;gap:16px;font-variant-numeric:tabular-nums}
+.pv-bar .pv-t b{font-size:30px;font-weight:700;margin-right:6px}
+.pv-bar #pvClock{margin-left:auto;color:#AFBCCB}
+.pv-bar button{font:600 14px/1 system-ui,sans-serif;color:#E8EDF3;background:#1E2A38;border:1px solid #33445A;border-radius:6px;padding:8px 12px;cursor:pointer}
+.pv-meta{display:flex;gap:18px;color:#AFBCCB;font-variant-numeric:tabular-nums}
+.pv-meta b{color:#E8EDF3}
+.pv-nav{display:flex;gap:10px}
+.pv-nav button{flex:1;font:600 17px/1 system-ui,-apple-system,"Segoe UI",sans-serif;color:#E8EDF3;background:#1E2A38;border:1px solid #33445A;border-radius:8px;padding:12px 10px;cursor:pointer}
+.pv-nav button:hover{background:#26364A}
+.pv-nav #pvGoNext{background:#2C59D4;border-color:#2C59D4}
+.pv-next{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:6px;overflow:hidden}
+.pv-next .lbl{position:absolute;left:8px;top:6px;z-index:3;font-size:12px;color:#fff;background:rgba(0,0,0,.65);padding:2px 8px;border-radius:4px}
+.pv-next .slide,.pv-next .b,.pv-next .bx{transition:none!important}
+.pv-notes{position:relative;overflow:auto;min-height:0;background:#141C27;border:1px solid #243140;border-radius:6px;padding:16px 18px;font-size:20px;line-height:1.5}
+.pv-notes p{margin:0 0 .75em}
+.pv-notes .cue{color:#8FA3B8;font-style:italic;font-size:17px}
+.pv-notes .cue.now{color:#FFD27A;font-style:normal;font-weight:700}
+/* ---------- A2E lab deck ---------- *//*VMS*/
+.vm .tag,.rq .tag{display:inline-block;background:var(--wsu);color:var(--wsu-ink);font-weight:700;font-size:21px;border-radius:99px;padding:7px 18px}
+.vm .tag.soft{background:var(--soft);color:var(--ink2)}
+.vis{margin-bottom:44px}
+.vis p{margin-top:16px;font-family:var(--serif);font-size:44px;line-height:1.18;font-weight:500;white-space:nowrap}
+.mgrid{margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.mc{background:var(--soft);border-radius:14px;padding:26px 30px}
+.mn{font-family:var(--serif);font-size:40px;font-weight:700;color:var(--ink3);line-height:1}
+.mc h3{font-size:30px;line-height:1.12;margin:12px 0 10px}
+.mc p{font-size:22px;line-height:1.4;color:var(--ink2)}
+.oq{margin-bottom:34px}
+.oq p{margin-top:16px;font-family:var(--serif);font-size:44px;line-height:1.16;font-weight:500;max-width:1320px;text-wrap:balance}
+.strands{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.st{background:var(--soft);border-radius:14px;padding:24px 24px 22px;display:flex;flex-direction:column}
+.st.b.in:nth-child(2){transition-delay:.1s}.st.b.in:nth-child(3){transition-delay:.2s}.st.b.in:nth-child(4){transition-delay:.3s}
+.sn{width:42px;height:42px;border-radius:50%;background:var(--k);color:#fff;font-weight:700;font-size:22px;display:flex;align-items:center;justify-content:center}
+.q1{--k:var(--rs)}.q2{--k:var(--re)}.q3{--k:var(--ai)}.q4{--k:var(--hu)}
+.st h3{font-size:27px;line-height:1.12;margin:14px 0 10px;color:var(--ink)}
+.st p{font-size:21px;line-height:1.38;color:var(--ink)}
+.st .eg{margin-top:auto;padding-top:14px;font-size:17px;line-height:1.35;color:var(--ink3)}
+/*VME*//*S5S*/
+.s5 h2{margin-bottom:26px}
+.stage{display:grid;flex:1}
+.stage>*{grid-area:1/1}
+.nums{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:1fr 1fr;align-self:center;width:100%;margin-top:-10px}
+.nums.bx{transition:opacity .5s ease,transform .6s cubic-bezier(.2,.7,.2,1)!important}
+.nums.bx.out{transform:scale(.88) translateY(-30px);pointer-events:none}
+.nm{display:flex;align-items:center;gap:36px;padding:24px 40px;min-height:250px;min-width:0}
+.nm.c1,.nm.c3{border-right:2px solid var(--rule)}
+.nm.c1,.nm.c2{border-bottom:2px solid var(--rule)}
+.nm.c2,.nm.c4{padding-left:56px}
+.nm .big{font-family:var(--serif);font-weight:700;font-size:210px;line-height:.85;flex:0 0 250px;text-align:right;letter-spacing:-.03em;color:var(--k);font-variant-numeric:lining-nums}
+.nm .lab{font-size:38px;white-space:nowrap;font-weight:700;line-height:1.15;color:var(--ink)}
+.nm .lab small{display:block;font-size:22px;font-weight:400;color:var(--ink3);margin-top:6px}
+.s5.on .nm{animation:numUp .7s cubic-bezier(.2,.7,.2,1) both}
+.s5.on .nm.c2{animation-delay:.12s}.s5.on .nm.c3{animation-delay:.24s}.s5.on .nm.c4{animation-delay:.36s}
+@keyframes numUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+.c1{--k:var(--rs)}.c2{--k:var(--ai)}.c3{--k:var(--ev)}.c4{--k:var(--hu)}
+.full{display:grid;grid-template-columns:1.2fr 1fr;gap:56px;align-content:start}
+.full.b{transition:opacity .55s ease .15s,transform .55s ease .15s}
+.full h3{display:flex;align-items:baseline;gap:14px;font-family:var(--sans);font-size:26px;font-weight:700;color:var(--ink2);margin-bottom:8px}
+.cnt{font-family:var(--serif);font-weight:700;color:var(--k);font-size:52px;line-height:1}
+.full .pub{padding:12px 0;border-top:2px solid var(--rule);font-size:20px;line-height:1.38;color:var(--ink2)}
+.full .pub b{color:var(--ink);font-family:var(--serif);font-size:25px;font-weight:600;display:block;line-height:1.18;margin-bottom:3px}
+.more{display:flex;align-items:baseline;gap:10px;border-top:2px solid var(--rule);padding-top:14px;font-size:24px;color:var(--ink2)}
+.more .cnt{font-size:40px}.more .sep{width:28px}
+.grp{font-size:18px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin:12px 0 2px}
+.full .ven li{grid-template-columns:110px 1fr;padding:8px 0;font-size:21px}
+.full .ven em{font-style:normal;color:var(--ink3)}
+.media{margin-top:12px;font-size:18px;color:var(--ink3)}
+@media (prefers-reduced-motion:reduce){.s5.on .nm{animation:none}.nums.bx.out{transform:none}}
+/*S5E*//*CVS*/
+.cover{position:absolute;right:40px;top:0;width:760px;height:auto}
+.cover path[class^="cv-"]{fill:none;stroke-linecap:round;opacity:var(--o)}
+.cv-hu{stroke:#F08A5D}.cv-ai{stroke:#86A6FF}
+.cd-hu{fill:#FFD9C7}.cd-ai{fill:#D6E0FF}
+.cover path.cv-exit{fill:none;stroke:#FFCD00;stroke-width:5;stroke-linecap:round;--o:1;animation-delay:3s}
+.cover path.cv-exh{fill:#FFCD00;stroke:none;--o:1;animation-delay:3.1s}
+.cover path[class^="cv-"],.cover circle{animation-name:cvLoop;animation-duration:8s;animation-timing-function:ease;animation-iteration-count:infinite;animation-fill-mode:both}
+.cover.done path[class^="cv-"],.cover.done circle{animation:none;opacity:var(--o,1)}
+@keyframes cvLoop{0%{opacity:0}8%{opacity:var(--o,1)}72%{opacity:var(--o,1)}84%{opacity:0}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.cover path,.cover circle{animation:none!important}}
+/*CVE*//*M3S*/
+/* model slide */
+:root{--hu:#C2562B;--hu-soft:#F6E3D8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--hu:#E8875A;--hu-soft:#33221A}}
+:root[data-theme="dark"]{--hu:#E8875A;--hu-soft:#33221A}
+.s3 h2{margin-bottom:18px}
+.gm{width:100%;height:auto}
+.gm text{font-family:var(--sans)}
+.frm{fill:var(--sheet);stroke:var(--rs);stroke-width:2.5}
+.fh{font-size:30px;font-weight:700;fill:var(--rs);text-anchor:middle}
+.fs{font-size:21px;fill:var(--rs);text-anchor:middle}
+.eng-band{fill:var(--hu-soft);opacity:.7}
+.refl{fill:none;stroke:var(--re);stroke-width:3;stroke-dasharray:10 8}
+.ah-re{fill:var(--re)}
+[class^="hx-"],.hx-hu,.hx-ai{fill:none;stroke-width:5;stroke-linecap:round}
+.hx-hu{stroke:var(--hu)}.hx-ai{stroke:var(--ai)}
+.bk{stroke-width:3;opacity:.3}
+.ah-hu{fill:var(--hu)}.ah-ai{fill:var(--ai)}.ah-nx{fill:var(--ink2)}
+.nx{fill:none;stroke:var(--ink2);stroke-width:3}
+.nr{fill:var(--sheet)}.nf-hu{fill:var(--hu)}.nf-ai{fill:var(--ai)}
+.nn{font-size:20px;font-weight:700;fill:#fff;text-anchor:middle}
+.ld{stroke:var(--rule);stroke-width:2}
+.lt{font-size:25px;font-weight:700;fill:var(--ink)}.nxl{font-size:22px}
+.ls{font-size:19px;fill:var(--ink2)}
+.ch-eng{font-size:27px;font-weight:700;fill:var(--hu)}.ch-ref{font-size:27px;font-weight:700;fill:var(--re)}
+.cb{font-size:21px;fill:var(--ink)}.cm{font-size:18px;fill:var(--ink3)}
+.cn-eng{stroke:var(--hu);stroke-width:1.5;opacity:.7}.cd-eng{fill:var(--hu)}
+.cn-ref{stroke:var(--re);stroke-width:1.5;opacity:.7}.cd-ref{fill:var(--re)}
+.cf{margin-top:14px;font-size:23px;color:var(--ink)}
+.cv{margin-top:4px;font-size:18px;color:var(--ink3)}
+/* title helix */
+.th{position:absolute;right:120px;top:100px;width:640px;height:auto}
+.th-hu,.th-ai{fill:none;stroke-width:7;stroke-linecap:round}
+.th-hu{stroke:#E8875A}.th-ai{stroke:#7E9DF3}
+.th .bk{stroke-width:4;opacity:.28}
+.tah-hu{fill:#E8875A}.tah-ai{fill:#7E9DF3}.tah-nx{fill:#A9B6C6}
+.tnx{fill:none;stroke:#A9B6C6;stroke-width:4}
+.tnr{fill:var(--night)}.tn-hu{fill:#E8875A}.tn-ai{fill:#7E9DF3}
+/*M3E*/
+/* model slide */
+:root{--hu:#C2562B;--hu-soft:#F6E3D8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--hu:#E8875A;--hu-soft:#33221A}}
+:root[data-theme="dark"]{--hu:#E8875A;--hu-soft:#33221A}
+.s3 h2{margin-bottom:18px}
+.gm{width:100%;height:auto}
+.gm text{font-family:var(--sans)}
+.frm{fill:var(--sheet);stroke:var(--rs);stroke-width:2.5}
+.fh{font-size:30px;font-weight:700;fill:var(--rs);text-anchor:middle}
+.fs{font-size:21px;fill:var(--rs);text-anchor:middle}
+.eng-band{fill:var(--hu-soft);opacity:.7}
+.refl{fill:none;stroke:var(--re);stroke-width:3;stroke-dasharray:10 8}
+.ah-re{fill:var(--re)}
+[class^="hx-"],.hx-hu,.hx-ai{fill:none;stroke-width:5;stroke-linecap:round}
+.hx-hu{stroke:var(--hu)}.hx-ai{stroke:var(--ai)}
+.bk{stroke-width:3;opacity:.3}
+.ah-hu{fill:var(--hu)}.ah-ai{fill:var(--ai)}.ah-nx{fill:var(--ink2)}
+.nx{fill:none;stroke:var(--ink2);stroke-width:3}
+.nr{fill:var(--sheet)}.nf-hu{fill:var(--hu)}.nf-ai{fill:var(--ai)}
+.nn{font-size:20px;font-weight:700;fill:#fff;text-anchor:middle}
+.ld{stroke:var(--rule);stroke-width:2}
+.lt{font-size:25px;font-weight:700;fill:var(--ink)}.nxl{font-size:22px}
+.ls{font-size:19px;fill:var(--ink2)}
+.ch-eng{font-size:27px;font-weight:700;fill:var(--hu)}.ch-ref{font-size:27px;font-weight:700;fill:var(--re)}
+.cb{font-size:21px;fill:var(--ink)}.cm{font-size:18px;fill:var(--ink3)}
+.cn-eng{stroke:var(--hu);stroke-width:1.5;opacity:.7}.cd-eng{fill:var(--hu)}
+.cn-ref{stroke:var(--re);stroke-width:1.5;opacity:.7}.cd-ref{fill:var(--re)}
+.cf{margin-top:14px;font-size:23px;color:var(--ink)}
+.cv{margin-top:4px;font-size:18px;color:var(--ink3)}
+/* title helix */
+.th{position:absolute;right:120px;top:100px;width:640px;height:auto}
+.th-hu,.th-ai{fill:none;stroke-width:7;stroke-linecap:round}
+.th-hu{stroke:#E8875A}.th-ai{stroke:#7E9DF3}
+.th .bk{stroke-width:4;opacity:.28}
+.tah-hu{fill:#E8875A}.tah-ai{fill:#7E9DF3}.tah-nx{fill:#A9B6C6}
+.tnx{fill:none;stroke:#A9B6C6;stroke-width:4}
+.tnr{fill:var(--night)}.tn-hu{fill:#E8875A}.tn-ai{fill:#7E9DF3}
+
+:root{--wsu:#FFCD00;--wsu-ink:#1A1600}
+.night{background:var(--night);color:var(--night-ink)}
+.s1 .eyebrow{font-size:24px;font-weight:700;color:var(--wsu);margin:140px 0 18px}
+.s1 h1{font-size:168px;line-height:.95;letter-spacing:-.025em;margin:0 0 14px}
+.s1 .full{font-family:var(--serif);font-size:42px;font-weight:600;color:var(--night-ink);margin-bottom:20px}
+.s1 .sub{font-family:var(--serif);font-size:38px;line-height:1.22;color:var(--night-ink2);max-width:700px}
+.s1 .who{margin-top:44px;font-size:22px;line-height:1.5;color:var(--night-ink2)}
+.s1 .who b{display:block;font-size:30px;color:var(--night-ink);margin-bottom:6px}
+.s1 .band{position:absolute;left:0;right:0;bottom:0;height:14px;background:var(--wsu)}
+/* 2 question */
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:34px}
+.vcol{border-radius:14px;padding:32px 38px}
+.vcol h3{font-size:36px;line-height:1.12;margin-bottom:18px}
+.vcol ul{margin:0;padding:0;list-style:none}
+.vcol li{font-size:26px;line-height:1.35;padding:10px 0;border-top:2px solid var(--rule)}
+.vcol li:first-child{border-top:0}
+.vcol.out{background:var(--det-soft)}.vcol.out li{color:var(--ink2)}
+.vcol.lrn{background:var(--soft)}
+.vcol .src{font-size:18px;color:var(--ink3);margin-top:14px}
+.ask{margin-top:36px;display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+.ask .tag{background:var(--wsu);color:var(--wsu-ink);font-weight:700;font-size:22px;border-radius:99px;padding:8px 20px}
+.ask p{font-family:var(--serif);font-size:42px;line-height:1.16;font-weight:500;white-space:nowrap}
+/* 4 research */
+.rs{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.rc{background:var(--soft);border-radius:14px;padding:30px 36px;display:flex;flex-direction:column}
+.rc .st{align-self:flex-start;font-size:19px;font-weight:700;border-radius:99px;padding:5px 14px;background:var(--paper);border:2px solid var(--rule);margin-bottom:16px}
+.rc h3{font-size:36px;line-height:1.1;margin-bottom:12px}
+.rc p{font-size:23px;line-height:1.4;color:var(--ink2)}
+.rc .meta{margin-top:auto;padding-top:16px;font-size:19px;color:var(--ink3)}
+.ph{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:18px 0 6px}
+.ph span{font-size:18px;line-height:1.25;font-weight:700;background:var(--paper);border-radius:8px;padding:10px 12px;border-top:5px solid var(--ink)}
+.ph span:nth-child(2){border-top-color:var(--ev)}.ph span:nth-child(3){border-top-color:var(--re)}.ph span:nth-child(4){border-top-color:var(--rs)}
+.fel{margin-top:26px;display:grid;grid-template-columns:230px 1fr 1fr;gap:24px;align-items:start;border-top:2px solid var(--rule);padding-top:22px}
+.fel .h{font-size:22px;font-weight:700;color:var(--ink2)}
+.fel div{font-size:22px;line-height:1.35;color:var(--ink2)}.fel b{display:block;color:var(--ink);font-size:24px}
+/* 5 work */
+.wk{display:grid;grid-template-columns:1.25fr 1fr;gap:56px}
+.wk h3{font-size:26px;color:var(--ink2);font-family:var(--sans);font-weight:700;margin-bottom:16px}
+.pub{padding:16px 0;border-top:2px solid var(--rule);font-size:22px;line-height:1.4;color:var(--ink2)}
+.pub b{color:var(--ink);font-family:var(--serif);font-size:27px;font-weight:600;display:block;line-height:1.2;margin-bottom:4px}
+.ven{list-style:none;margin:0;padding:0}
+.ven li{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:12px 0;border-top:2px solid var(--rule);font-size:22px;line-height:1.35}
+.ven li span{color:var(--ink3);font-variant-numeric:tabular-nums}
+/* 6 involved */
+.gi{display:grid;grid-template-columns:1fr 1fr 380px;gap:28px;align-items:stretch}
+.gc{border-radius:14px;padding:32px 34px;display:flex;flex-direction:column}
+.gc .k{font-size:21px;font-weight:700;opacity:.75}
+.gc h3{font-size:44px;line-height:1.08;margin:10px 0 16px}
+.gc p{font-size:24px;line-height:1.4}
+.gc.tour{background:var(--wsu);color:var(--wsu-ink)}
+.gc.ra{background:var(--soft)}.gc.ra p{color:var(--ink2)}
+.gc.qrc{background:var(--soft);align-items:center;text-align:center}
+.qrw{background:#fff;border-radius:10px;padding:18px;width:230px;height:230px;box-sizing:border-box;margin:6px 0 16px}
+.qr{width:100%;height:100%}
+.gc.qrc p{font-size:21px;color:var(--ink2)}.gc.qrc b{color:var(--ink);font-size:22px;}
+.thanks{margin-top:34px;font-family:var(--serif);font-size:40px;font-weight:500}
+</style>
+</head>
+<body>
+<div class="vp" id="vp" tabindex="0" aria-label="Slide deck. Use the arrow keys to move between slides.">
+<div class="deck" id="deck">
+
+<section class="slide night s1" data-part="Opening" data-nofoot aria-label="Title">
+<p class="eyebrow">Research Mixer 2026</p>
+<h1>A²E Lab</h1>
+<p class="full">Applied AI in Education Lab</p>
+<div class="who"><b>JaeHwan Byun, Ph.D.</b>Director, A²E Lab<br>Associate Professor, School of Teaching and Learning<br>Wichita State University</div>
+<svg class="cover" viewBox="0 0 760 820" aria-hidden="true"><defs><radialGradient id="cvg" gradientUnits="userSpaceOnUse" cx="400" cy="220" r="330"><stop offset="0" stop-color="#FFCD00" stop-opacity=".22"/><stop offset="1" stop-color="#FFCD00" stop-opacity="0"/></radialGradient><filter id="cvglow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><rect width="760" height="820" fill="url(#cvg)"/><g filter="url(#cvglow)"><path class="cv-hu" d="M319.0 716.0 L318.8 711.4 L319.6 706.9 L321.5 702.4 L324.4 697.9 L328.4 693.6 L333.3 689.3 L339.2 685.2 L346.0 681.3 L353.6 677.6 L361.9 674.1 L370.9 670.8 L380.3 667.8 L390.2 665.1 L400.4 662.6 L410.7 660.5 L421.1 658.7 L431.3 657.1 L441.4 655.9 L451.0 655.0 L460.2 654.3 L468.7 654.0 L476.5 653.8 L483.4 654.0 L489.4 654.3 L494.3 654.8 L498.1 655.4 L500.7 656.2 L502.0 657.0" style="stroke-width:2.6;--o:.32;animation-delay:0.51s"/><path class="cv-hu" d="M277.0 598.0 L277.1 592.1 L278.7 586.4 L281.9 580.7 L286.7 575.2 L292.9 569.7 L300.6 564.5 L309.7 559.5 L320.0 554.8 L331.4 550.3 L343.8 546.2 L357.1 542.5 L371.1 539.1 L385.7 536.2 L400.5 533.7 L415.6 531.6 L430.6 530.0 L445.4 528.8 L459.7 528.1 L473.5 527.7 L486.5 527.8 L498.5 528.3 L509.4 529.1 L519.1 530.2 L527.3 531.6 L534.0 533.2 L539.1 535.0 L542.4 537.0 L544.0 539.1" style="stroke-width:2.6;--o:.32;animation-delay:1.03s"/><path class="cv-hu" d="M235.0 480.0 L235.3 472.8 L237.8 465.9 L242.3 459.1 L248.9 452.4 L257.5 445.9 L267.9 439.7 L280.1 433.7 L293.9 428.2 L309.2 423.0 L325.8 418.4 L343.4 414.2 L362.0 410.5 L381.1 407.4 L400.7 404.8 L420.4 402.8 L440.1 401.4 L459.4 400.5 L478.1 400.3 L496.0 400.5 L512.8 401.3 L528.3 402.6 L542.4 404.3 L554.7 406.4 L565.2 408.9 L573.7 411.6 L580.1 414.7 L584.2 417.8 L586.0 421.1" style="stroke-width:2.6;--o:.32;animation-delay:1.55s"/><path class="cv-hu" d="M193.0 362.0 L193.6 353.6 L196.9 345.4 L202.7 337.4 L211.1 329.6 L222.0 322.0 L235.2 314.8 L250.5 308.0 L267.8 301.6 L287.0 295.8 L307.7 290.5 L329.7 285.8 L352.8 281.8 L376.6 278.5 L400.9 275.9 L425.3 273.9 L449.6 272.7 L473.4 272.2 L496.5 272.4 L518.5 273.3 L539.1 274.8 L558.2 276.9 L575.3 279.5 L590.4 282.6 L603.1 286.2 L613.4 290.1 L621.0 294.3 L625.9 298.7 L628.0 303.2" style="stroke-width:2.6;--o:.32;animation-delay:2.07s"/><path class="cv-hu" d="M151.0 244.0 L151.9 234.3 L156.0 225.0 L163.2 215.8 L173.4 206.8 L186.5 198.2 L202.4 190.0 L220.9 182.2 L241.8 175.1 L264.8 168.5 L289.6 162.6 L316.0 157.5 L343.6 153.2 L372.1 149.6 L401.0 146.9 L430.2 145.1 L459.1 144.1 L487.4 144.0 L514.9 144.6 L541.0 146.1 L565.4 148.3 L588.0 151.2 L608.3 154.7 L626.0 158.9 L641.0 163.5 L653.1 168.5 L662.0 173.9 L667.7 179.5 L670.0 185.2" style="stroke-width:2.6;--o:.32;animation-delay:2.59s"/><path class="cv-hu" d="M628.0 303.0Q628.4 305.2 627.2 307.7" style="stroke-width:4.9;--o:0.58;animation-delay:2.33s"/><path class="cv-hu" d="M586.0 421.0Q586.4 422.6 585.5 424.4" style="stroke-width:4.4;--o:0.58;animation-delay:1.81s"/><path class="cv-hu" d="M544.0 539.0Q544.4 540.0 543.8 541.2" style="stroke-width:3.9;--o:0.58;animation-delay:1.29s"/><path class="cv-hu" d="M502.0 657.0Q502.4 657.4 502.1 657.9" style="stroke-width:3.4;--o:0.58;animation-delay:0.77s"/><path class="cv-ai" d="M278.5 603.7Q277.4 601.0 277.0 597.8" style="stroke-width:3.6;--o:0.58;animation-delay:1.02s"/><path class="cv-hu" d="M460.0 775.0Q460.4 774.8 460.4 774.6" style="stroke-width:2.9;--o:0.58;animation-delay:0.25s"/><path class="cv-ai" d="M320.3 720.4Q319.4 718.3 319.0 715.8" style="stroke-width:3.1;--o:0.58;animation-delay:0.50s"/><path class="cv-ai" d="M236.8 486.9Q235.4 483.6 235.0 479.8" style="stroke-width:4.1;--o:0.58;animation-delay:1.54s"/><path class="cv-ai" d="M195.0 370.1Q193.4 366.2 193.0 361.7" style="stroke-width:4.6;--o:0.58;animation-delay:2.06s"/><path class="cv-ai" d="M153.3 253.3Q151.4 248.9 151.0 243.7" style="stroke-width:5.1;--o:0.58;animation-delay:2.58s"/><path class="cv-hu" d="M627.3 307.6Q626.3 309.7 623.6 312.2" style="stroke-width:5.4;--o:0.63;animation-delay:2.34s"/><path class="cv-ai" d="M322.5 724.8Q321.2 722.7 320.2 720.3" style="stroke-width:3.6;--o:0.63;animation-delay:0.49s"/><path class="cv-hu" d="M585.6 424.3Q584.8 425.9 582.7 427.8" style="stroke-width:4.9;--o:0.63;animation-delay:1.82s"/><path class="cv-hu" d="M543.8 541.1Q543.4 542.1 541.7 543.3" style="stroke-width:4.4;--o:0.63;animation-delay:1.30s"/><path class="cv-hu" d="M460.4 774.7Q460.4 774.5 459.9 774.3" style="stroke-width:3.4;--o:0.63;animation-delay:0.26s"/><path class="cv-hu" d="M502.1 657.9Q501.9 658.3 500.8 658.8" style="stroke-width:3.9;--o:0.63;animation-delay:0.78s"/><path class="cv-ai" d="M281.5 609.2Q279.7 606.6 278.4 603.5" style="stroke-width:4.1;--o:0.63;animation-delay:1.01s"/><path class="cv-ai" d="M240.6 493.7Q238.2 490.4 236.7 486.6" style="stroke-width:4.6;--o:0.63;animation-delay:1.53s"/><path class="cv-ai" d="M158.7 262.5Q155.3 258.1 153.2 253.0" style="stroke-width:5.6;--o:0.63;animation-delay:2.57s"/><path class="cv-ai" d="M199.7 378.1Q196.8 374.3 194.9 369.8" style="stroke-width:5.1;--o:0.63;animation-delay:2.05s"/><path class="cv-hu" d="M623.7 312.1Q621.4 314.2 617.0 316.6" style="stroke-width:5.9;--o:0.67;animation-delay:2.35s"/><path class="cv-hu" d="M541.9 543.2Q540.5 544.2 537.9 545.3" style="stroke-width:4.9;--o:0.67;animation-delay:1.31s"/><path class="cv-hu" d="M500.9 658.8Q500.0 659.2 498.3 659.7" style="stroke-width:4.4;--o:0.67;animation-delay:0.79s"/><path class="cv-ai" d="M325.7 729.1Q323.9 727.1 322.4 724.7" style="stroke-width:4.1;--o:0.67;animation-delay:0.48s"/><path class="cv-ai" d="M286.0 614.7Q283.5 612.1 281.4 609.0" style="stroke-width:4.6;--o:0.67;animation-delay:1.00s"/><path class="cv-hu" d="M460.0 774.3Q459.6 774.2 458.7 774.0" style="stroke-width:3.9;--o:0.67;animation-delay:0.27s"/><path class="cv-ai" d="M246.4 500.3Q243.1 497.2 240.4 493.4" style="stroke-width:5.1;--o:0.67;animation-delay:1.52s"/><path class="cv-ai" d="M206.7 385.9Q202.7 382.2 199.4 377.8" style="stroke-width:5.6;--o:0.67;animation-delay:2.04s"/><path class="cv-ai" d="M167.1 271.5Q162.3 267.3 158.5 262.2" style="stroke-width:6.1;--o:0.67;animation-delay:2.56s"/><path class="cv-hu" d="M582.8 427.6Q580.9 429.2 577.5 431.0" style="stroke-width:5.4;--o:0.67;animation-delay:1.83s"/><path class="cv-hu" d="M617.3 316.5Q613.6 318.5 607.7 320.8" style="stroke-width:6.4;--o:0.72;animation-delay:2.36s"/><path class="cv-hu" d="M577.7 430.8Q574.7 432.4 570.0 434.0" style="stroke-width:5.9;--o:0.72;animation-delay:1.84s"/><path class="cv-hu" d="M498.4 659.6Q496.9 660.0 494.4 660.4" style="stroke-width:4.9;--o:0.72;animation-delay:0.80s"/><path class="cv-ai" d="M254.0 506.7Q249.9 503.7 246.1 500.1" style="stroke-width:5.6;--o:0.72;animation-delay:1.51s"/><path class="cv-hu" d="M538.0 545.2Q535.8 546.2 532.2 547.2" style="stroke-width:5.4;--o:0.72;animation-delay:1.32s"/><path class="cv-hu" d="M458.8 774.0Q458.0 773.9 456.7 773.7" style="stroke-width:4.4;--o:0.72;animation-delay:0.28s"/><path class="cv-ai" d="M329.7 733.2Q327.5 731.3 325.5 728.9" style="stroke-width:4.6;--o:0.72;animation-delay:0.47s"/><path class="cv-ai" d="M291.9 620.0Q288.7 617.5 285.8 614.5" style="stroke-width:5.1;--o:0.72;animation-delay:0.99s"/><path class="cv-ai" d="M216.2 393.4Q211.0 389.9 206.4 385.6" style="stroke-width:6.1;--o:0.72;animation-delay:2.03s"/><path class="cv-ai" d="M178.4 280.2Q172.2 276.1 166.7 271.2" style="stroke-width:6.6;--o:0.72;animation-delay:2.55s"/><path class="cv-ai" d="M227.9 400.7Q221.7 397.3 215.8 393.2" style="stroke-width:6.5;--o:0.77;animation-delay:2.02s"/><path class="cv-ai" d="M192.3 288.5Q184.9 284.6 177.9 279.9" style="stroke-width:7.0;--o:0.77;animation-delay:2.54s"/><path class="cv-hu" d="M494.6 660.4Q492.5 660.8 489.3 661.1" style="stroke-width:5.4;--o:0.77;animation-delay:0.81s"/><path class="cv-ai" d="M299.0 625.0Q295.3 622.6 291.7 619.8" style="stroke-width:5.5;--o:0.77;animation-delay:0.98s"/><path class="cv-hu" d="M456.8 773.7Q455.6 773.5 453.9 773.3" style="stroke-width:4.9;--o:0.77;animation-delay:0.29s"/><path class="cv-ai" d="M334.6 737.2Q332.0 735.3 329.6 733.1" style="stroke-width:5.0;--o:0.77;animation-delay:0.46s"/><path class="cv-ai" d="M263.5 512.8Q258.5 510.0 253.7 506.5" style="stroke-width:6.0;--o:0.77;animation-delay:1.50s"/><path class="cv-hu" d="M608.1 320.6Q603.1 322.6 595.8 324.7" style="stroke-width:6.9;--o:0.77;animation-delay:2.37s"/><path class="cv-hu" d="M570.3 433.9Q566.2 435.3 560.3 436.8" style="stroke-width:6.4;--o:0.77;animation-delay:1.85s"/><path class="cv-hu" d="M532.4 547.2Q529.3 548.0 524.8 549.0" style="stroke-width:5.9;--o:0.77;animation-delay:1.33s"/><path class="cv-hu" d="M560.7 436.7Q555.5 438.0 548.5 439.3" style="stroke-width:6.8;--o:0.81;animation-delay:1.86s"/><path class="cv-hu" d="M596.2 324.5Q589.9 326.3 581.2 328.2" style="stroke-width:7.3;--o:0.81;animation-delay:2.38s"/><path class="cv-hu" d="M454.0 773.3Q452.5 773.1 450.3 772.8" style="stroke-width:5.3;--o:0.81;animation-delay:0.30s"/><path class="cv-hu" d="M525.1 548.9Q521.2 549.7 515.8 550.5" style="stroke-width:6.3;--o:0.81;animation-delay:1.34s"/><path class="cv-hu" d="M489.5 661.1Q486.8 661.4 483.0 661.6" style="stroke-width:5.8;--o:0.81;animation-delay:0.82s"/><path class="cv-ai" d="M340.2 741.0Q337.3 739.2 334.4 737.1" style="stroke-width:5.5;--o:0.81;animation-delay:0.45s"/><path class="cv-ai" d="M307.4 629.9Q303.0 627.6 298.8 624.9" style="stroke-width:6.0;--o:0.81;animation-delay:0.97s"/><path class="cv-ai" d="M274.5 518.7Q268.8 515.9 263.1 512.6" style="stroke-width:6.5;--o:0.81;animation-delay:1.49s"/><path class="cv-ai" d="M241.7 407.5Q234.5 404.3 227.4 400.4" style="stroke-width:7.0;--o:0.81;animation-delay:2.01s"/><path class="cv-ai" d="M208.8 296.3Q200.3 292.6 191.8 288.2" style="stroke-width:7.5;--o:0.81;animation-delay:2.53s"/><path class="cv-ai" d="M257.3 413.8Q249.3 410.9 241.2 407.2" style="stroke-width:7.4;--o:0.85;animation-delay:2.00s"/><path class="cv-hu" d="M581.8 328.0Q574.2 329.7 564.3 331.2" style="stroke-width:7.7;--o:0.85;animation-delay:2.39s"/><path class="cv-hu" d="M548.9 439.2Q542.8 440.4 534.7 441.5" style="stroke-width:7.2;--o:0.85;animation-delay:1.87s"/><path class="cv-hu" d="M516.1 550.4Q511.4 551.1 505.1 551.7" style="stroke-width:6.7;--o:0.85;animation-delay:1.35s"/><path class="cv-hu" d="M483.3 661.6Q480.0 661.8 475.6 662.0" style="stroke-width:6.2;--o:0.85;animation-delay:0.83s"/><path class="cv-hu" d="M450.4 772.8Q448.5 772.6 446.0 772.2" style="stroke-width:5.7;--o:0.85;animation-delay:0.31s"/><path class="cv-ai" d="M316.7 634.4Q312.0 632.3 307.0 629.7" style="stroke-width:6.4;--o:0.85;animation-delay:0.97s"/><path class="cv-ai" d="M287.0 524.1Q280.6 521.6 274.1 518.5" style="stroke-width:6.9;--o:0.85;animation-delay:1.49s"/><path class="cv-ai" d="M346.4 744.7Q343.3 743.0 340.0 740.9" style="stroke-width:5.9;--o:0.85;animation-delay:0.45s"/><path class="cv-ai" d="M227.6 303.6Q218.0 300.2 208.2 296.0" style="stroke-width:7.9;--o:0.85;animation-delay:2.52s"/><path class="cv-hu" d="M535.2 441.4Q528.2 442.4 519.1 443.2" style="stroke-width:7.6;--o:0.89;animation-delay:1.87s"/><path class="cv-hu" d="M505.5 551.7Q500.1 552.2 493.1 552.7" style="stroke-width:7.1;--o:0.89;animation-delay:1.35s"/><path class="cv-ai" d="M327.1 638.6Q321.9 636.7 316.4 634.2" style="stroke-width:6.7;--o:0.89;animation-delay:0.96s"/><path class="cv-ai" d="M300.9 529.2Q293.9 526.8 286.6 523.9" style="stroke-width:7.2;--o:0.89;animation-delay:1.48s"/><path class="cv-ai" d="M274.7 419.7Q265.9 417.0 256.8 413.6" style="stroke-width:7.7;--o:0.89;animation-delay:2.00s"/><path class="cv-ai" d="M248.5 310.3Q237.9 307.2 226.9 303.3" style="stroke-width:8.2;--o:0.89;animation-delay:2.52s"/><path class="cv-hu" d="M446.1 772.2Q443.9 771.9 441.0 771.5" style="stroke-width:6.1;--o:0.89;animation-delay:0.32s"/><path class="cv-ai" d="M353.2 748.1Q349.8 746.5 346.2 744.6" style="stroke-width:6.2;--o:0.89;animation-delay:0.44s"/><path class="cv-hu" d="M475.8 662.0Q472.0 662.1 467.0 662.1" style="stroke-width:6.6;--o:0.89;animation-delay:0.84s"/><path class="cv-hu" d="M564.9 331.1Q556.3 332.5 545.2 333.8" style="stroke-width:8.1;--o:0.89;animation-delay:2.40s"/><path class="cv-hu" d="M545.9 333.7Q536.2 334.8 524.1 335.8" style="stroke-width:8.4;--o:0.92;animation-delay:2.40s"/><path class="cv-hu" d="M519.7 443.2Q511.8 443.9 501.9 444.5" style="stroke-width:7.9;--o:0.92;animation-delay:1.88s"/><path class="cv-hu" d="M493.5 552.6Q487.4 553.0 479.7 553.2" style="stroke-width:7.4;--o:0.92;animation-delay:1.36s"/><path class="cv-hu" d="M467.3 662.1Q463.0 662.1 457.5 662.0" style="stroke-width:6.9;--o:0.92;animation-delay:0.84s"/><path class="cv-hu" d="M441.2 771.6Q438.6 771.2 435.3 770.7" style="stroke-width:6.4;--o:0.92;animation-delay:0.32s"/><path class="cv-ai" d="M360.5 751.3Q356.9 749.8 353.0 748.0" style="stroke-width:6.5;--o:0.92;animation-delay:0.43s"/><path class="cv-ai" d="M315.8 533.8Q308.3 531.7 300.4 529.0" style="stroke-width:7.5;--o:0.92;animation-delay:1.47s"/><path class="cv-ai" d="M338.2 642.6Q332.6 640.8 326.7 638.5" style="stroke-width:7.0;--o:0.92;animation-delay:0.95s"/><path class="cv-ai" d="M293.5 425.0Q284.1 422.6 274.0 419.5" style="stroke-width:8.0;--o:0.92;animation-delay:1.99s"/><path class="cv-ai" d="M271.1 316.3Q259.8 313.6 247.7 310.0" style="stroke-width:8.5;--o:0.92;animation-delay:2.51s"/><path class="cv-ai" d="M295.2 321.6Q283.3 319.2 270.3 316.1" style="stroke-width:8.8;--o:0.94;animation-delay:2.50s"/><path class="cv-hu" d="M524.9 335.7Q514.4 336.5 501.3 337.1" style="stroke-width:8.7;--o:0.94;animation-delay:2.41s"/><path class="cv-hu" d="M502.5 444.5Q493.9 445.0 483.3 445.3" style="stroke-width:8.2;--o:0.94;animation-delay:1.89s"/><path class="cv-hu" d="M435.5 770.7Q432.7 770.3 429.1 769.7" style="stroke-width:6.7;--o:0.94;animation-delay:0.33s"/><path class="cv-ai" d="M368.1 754.3Q364.4 752.9 360.2 751.2" style="stroke-width:6.8;--o:0.94;animation-delay:0.42s"/><path class="cv-hu" d="M480.2 553.2Q473.5 553.4 465.2 553.4" style="stroke-width:7.7;--o:0.94;animation-delay:1.37s"/><path class="cv-hu" d="M457.9 662.0Q453.1 661.9 447.1 661.6" style="stroke-width:7.2;--o:0.94;animation-delay:0.85s"/><path class="cv-ai" d="M349.9 646.1Q344.1 644.5 337.7 642.4" style="stroke-width:7.3;--o:0.94;animation-delay:0.94s"/><path class="cv-ai" d="M331.7 538.0Q323.8 536.1 315.3 533.6" style="stroke-width:7.8;--o:0.94;animation-delay:1.46s"/><path class="cv-ai" d="M313.4 429.8Q303.5 427.7 292.8 424.9" style="stroke-width:8.3;--o:0.94;animation-delay:1.98s"/><path class="cv-hu" d="M465.7 553.4Q458.5 553.4 449.7 553.2" style="stroke-width:7.9;--o:0.97;animation-delay:1.38s"/><path class="cv-hu" d="M447.5 661.6Q442.3 661.3 436.0 660.8" style="stroke-width:7.4;--o:0.97;animation-delay:0.86s"/><path class="cv-hu" d="M429.3 769.7Q426.2 769.2 422.3 768.5" style="stroke-width:6.9;--o:0.97;animation-delay:0.34s"/><path class="cv-ai" d="M376.0 757.0Q372.1 755.8 367.8 754.2" style="stroke-width:7.0;--o:0.97;animation-delay:0.41s"/><path class="cv-ai" d="M362.1 649.3Q356.1 647.9 349.5 646.0" style="stroke-width:7.5;--o:0.97;animation-delay:0.93s"/><path class="cv-ai" d="M348.2 541.6Q340.1 540.0 331.1 537.8" style="stroke-width:8.0;--o:0.97;animation-delay:1.45s"/><path class="cv-ai" d="M334.4 434.0Q324.1 432.1 312.7 429.6" style="stroke-width:8.5;--o:0.97;animation-delay:1.97s"/><path class="cv-ai" d="M320.5 326.3Q308.0 324.2 294.3 321.5" style="stroke-width:9.0;--o:0.97;animation-delay:2.49s"/><path class="cv-hu" d="M502.2 337.1Q490.9 337.6 477.1 337.8" style="stroke-width:8.9;--o:0.97;animation-delay:2.42s"/><path class="cv-hu" d="M484.0 445.3Q474.7 445.5 463.4 445.5" style="stroke-width:8.4;--o:0.97;animation-delay:1.90s"/><path class="cv-hu" d="M464.2 445.5Q454.4 445.5 442.6 445.1" style="stroke-width:8.6;--o:0.98;animation-delay:1.91s"/><path class="cv-hu" d="M478.0 337.8Q466.1 338.0 451.8 337.8" style="stroke-width:9.1;--o:0.98;animation-delay:2.43s"/><path class="cv-hu" d="M450.3 553.2Q442.6 553.0 433.5 552.5" style="stroke-width:8.1;--o:0.98;animation-delay:1.39s"/><path class="cv-hu" d="M422.5 768.6Q419.2 768.0 415.1 767.2" style="stroke-width:7.1;--o:0.98;animation-delay:0.35s"/><path class="cv-ai" d="M384.0 759.5Q380.1 758.4 375.7 756.9" style="stroke-width:7.2;--o:0.98;animation-delay:0.40s"/><path class="cv-hu" d="M436.4 660.9Q430.9 660.5 424.3 659.8" style="stroke-width:7.6;--o:0.98;animation-delay:0.87s"/><path class="cv-ai" d="M374.6 652.2Q368.5 650.9 361.7 649.2" style="stroke-width:7.7;--o:0.98;animation-delay:0.92s"/><path class="cv-ai" d="M365.3 544.8Q357.0 543.4 347.6 541.5" style="stroke-width:8.2;--o:0.98;animation-delay:1.44s"/><path class="cv-ai" d="M355.9 437.5Q345.4 435.9 333.6 433.8" style="stroke-width:8.7;--o:0.98;animation-delay:1.96s"/><path class="cv-ai" d="M346.6 330.1Q333.8 328.5 319.6 326.1" style="stroke-width:9.2;--o:0.98;animation-delay:2.48s"/><path class="cv-hu" d="M434.0 552.5Q426.1 552.1 416.6 551.3" style="stroke-width:8.2;--o:0.99;animation-delay:1.40s"/><path class="cv-ai" d="M377.9 440.4Q367.3 439.1 355.2 437.4" style="stroke-width:8.8;--o:0.99;animation-delay:1.95s"/><path class="cv-hu" d="M415.4 767.2Q411.8 766.5 407.5 765.6" style="stroke-width:7.2;--o:0.99;animation-delay:0.36s"/><path class="cv-ai" d="M392.0 761.8Q388.1 760.8 383.7 759.5" style="stroke-width:7.3;--o:0.99;animation-delay:0.39s"/><path class="cv-hu" d="M424.7 659.9Q418.9 659.3 412.1 658.4" style="stroke-width:7.7;--o:0.99;animation-delay:0.88s"/><path class="cv-ai" d="M387.3 654.7Q381.2 653.6 374.2 652.1" style="stroke-width:7.8;--o:0.99;animation-delay:0.91s"/><path class="cv-ai" d="M382.6 547.5Q374.2 546.3 364.7 544.7" style="stroke-width:8.3;--o:0.99;animation-delay:1.43s"/><path class="cv-hu" d="M452.7 337.8Q440.3 337.6 425.7 337.0" style="stroke-width:9.2;--o:0.99;animation-delay:2.44s"/><path class="cv-hu" d="M443.4 445.1Q433.2 444.8 421.1 444.1" style="stroke-width:8.7;--o:0.99;animation-delay:1.92s"/><path class="cv-ai" d="M373.2 333.2Q360.3 331.9 345.7 330.0" style="stroke-width:9.3;--o:0.99;animation-delay:2.47s"/><path class="cv-hu" d="M421.9 444.2Q411.4 443.6 399.2 442.5" style="stroke-width:8.8;--o:1.00;animation-delay:1.93s"/><path class="cv-hu" d="M426.6 337.0Q413.9 336.5 399.0 335.4" style="stroke-width:9.3;--o:1.00;animation-delay:2.45s"/><path class="cv-hu" d="M407.8 765.6Q404.1 764.8 399.7 763.8" style="stroke-width:7.3;--o:1.00;animation-delay:0.37s"/><path class="cv-ai" d="M400.0 763.8Q396.2 762.9 391.7 761.7" style="stroke-width:7.3;--o:1.00;animation-delay:0.38s"/><path class="cv-hu" d="M412.5 658.5Q406.5 657.7 399.5 656.7" style="stroke-width:7.8;--o:1.00;animation-delay:0.89s"/><path class="cv-ai" d="M400.0 656.8Q393.9 655.8 386.9 654.6" style="stroke-width:7.8;--o:1.00;animation-delay:0.90s"/><path class="cv-hu" d="M417.2 551.3Q409.0 550.7 399.4 549.6" style="stroke-width:8.3;--o:1.00;animation-delay:1.41s"/><path class="cv-ai" d="M400.0 549.7Q391.6 548.8 382.0 547.4" style="stroke-width:8.3;--o:1.00;animation-delay:1.42s"/><path class="cv-ai" d="M400.0 442.6Q389.4 441.7 377.1 440.3" style="stroke-width:8.8;--o:1.00;animation-delay:1.94s"/><path class="cv-ai" d="M400.0 335.5Q387.1 334.6 372.3 333.1" style="stroke-width:9.3;--o:1.00;animation-delay:2.46s"/><circle class="cd-hu" cx="460.0" cy="775.0" r="6.8" style="animation-delay:0.25s"/><circle class="cd-ai" cx="400.0" cy="763.8" r="4.7" style="animation-delay:0.38s"/><circle class="cd-hu" cx="319.0" cy="716.0" r="4.9" style="animation-delay:0.51s"/><circle class="cd-hu" cx="502.0" cy="657.0" r="7.9" style="animation-delay:0.77s"/><circle class="cd-ai" cx="400.0" cy="656.8" r="5.5" style="animation-delay:0.90s"/><circle class="cd-hu" cx="277.0" cy="598.0" r="5.7" style="animation-delay:1.03s"/><circle class="cd-hu" cx="544.0" cy="539.0" r="9.1" style="animation-delay:1.29s"/><circle class="cd-ai" cx="400.0" cy="549.7" r="6.3" style="animation-delay:1.42s"/><circle class="cd-hu" cx="235.0" cy="480.0" r="6.5" style="animation-delay:1.55s"/><circle class="cd-hu" cx="586.0" cy="421.0" r="10.4" style="animation-delay:1.81s"/><circle class="cd-ai" cx="400.0" cy="442.6" r="7.1" style="animation-delay:1.94s"/><circle class="cd-hu" cx="193.0" cy="362.0" r="7.3" style="animation-delay:2.07s"/><circle class="cd-hu" cx="628.0" cy="303.0" r="11.6" style="animation-delay:2.33s"/><circle class="cd-ai" cx="400.0" cy="335.5" r="7.9" style="animation-delay:2.46s"/><circle class="cd-hu" cx="151.0" cy="244.0" r="8.1" style="animation-delay:2.59s"/><circle class="cd-hu" cx="670.0" cy="185.0" r="12.8" style="animation-delay:2.85s"/></g><path class="cv-exit" d="M674.0 179.0C696.0 145.0 700.0 115.0 704.0 81.0"/><path class="cv-exh" d="M-4 -12L18 0L-4 12z" transform="translate(704.0 81.0) rotate(-70)"/></svg>
+<div class="band"></div>
+<aside class="notes">
+<p class="cue">About 30 seconds.</p>
+<p>Good evening. I’m Jay Byun, associate professor in the School of Teaching and Learning, and I direct the Applied AI in Education Lab, A-squared-E for short. We launched in October 2025, so the lab just turned one.</p>
+<p>The spiral on the right is how we picture learning with GenAI. Each turn is one round of working with GenAI: orange is the human’s part, blue is GenAI’s. It widens as it rises, because each round should carry the learner somewhere new.</p>
+</aside>
+</section>
+
+<section class="slide vm" data-part="Vision and mission" aria-label="Vision and mission">
+<div class="body">
+<h2>Vision and mission</h2>
+<div class="vis"><span class="tag">Vision</span><p>To establish Wichita State University<br>as a regional leader and a nationally recognized<br>center of excellence in applied research on GenAI in education.</p></div>
+<div class="mis">
+<span class="tag soft">Mission</span>
+<div class="mgrid">
+<div class="mc"><span class="mn">01</span><h3>Applied research</h3><p>Study AI in teaching, learning, and assessment, starting with GenAI, and turn findings into practical classroom guidance.</p></div>
+<div class="mc"><span class="mn">02</span><h3>Collaboration</h3><p>Connect WSU faculty, local school districts, and external partners to support ethical and equitable AI adoption.</p></div>
+<div class="mc"><span class="mn">03</span><h3>Professional development</h3><p>Offer workshops and stackable micro-credentials that prepare teachers to integrate AI responsibly.</p></div>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p class="cue">About 40 seconds.</p>
+<p>The A-squared-E Lab launched in October 2025. Our vision is for Wichita State to become a regional leader and a nationally recognized center of excellence in applied research on GenAI in education.</p>
+<p>Our mission has three parts: applied research that turns into practical classroom guidance; collaboration across WSU, local school districts, and outside partners; and professional development that helps teachers integrate AI responsibly.</p>
+</aside>
+</section>
+
+<section class="slide rq" data-part="Research questions" aria-label="Our research questions">
+<div class="body">
+<h2>Our research questions</h2>
+<div class="oq"><span class="tag">Overarching question</span><p>How can GenAI be integrated into education in ways that strengthen, rather than replace, human learning and judgment?</p></div>
+<div class="strands">
+<div class="st b q1" data-b="1"><span class="sn">1</span><h3>Understanding practice</h3><p>How are educators and learners actually using GenAI?</p><p class="eg">GenAI in the K-12 Classroom (URCA); systematic review in mathematics education</p></div>
+<div class="st b q2" data-b="1"><span class="sn">2</span><h3>Building theory</h3><p>What does learning look like when GenAI takes part?</p><p class="eg">Generativism; dialectical autoethnography</p></div>
+<div class="st b q3" data-b="1"><span class="sn">3</span><h3>Tools that support learning</h3><p>Can tools support learning without taking over the learner’s judgment?</p><p class="eg">Undergraduate fellows’ STEM tutor and course-grounded learning assistant</p></div>
+<div class="st b q4" data-b="1"><span class="sn">4</span><h3>Fostering epistemic responsibility</h3><p>Which classroom strategies keep learners accountable for what they accept as true?</p><p class="eg">Faculty professional development; Spencer Foundation proposal (under review)</p></div>
+</div>
+</div>
+<aside class="notes">
+<p class="cue">About 50 seconds, one click.</p>
+<p>Everything we do comes back to one overarching question: how can GenAI be integrated into education in ways that strengthen, rather than replace, human learning and judgment?</p>
+<p>[Click] We work on it from four directions. First, we study how educators and learners are actually using GenAI. Second, we build theory, such as Generativism, the framework Dr. Mara Alagic and I published this year. Third, we develop tools that support learning without taking over the learner’s judgment; our undergraduate fellows are building two of them. And fourth, we develop classroom strategies that foster epistemic responsibility, meaning staying accountable for what you accept as true.</p>
+</aside>
+</section>
+
+<section class="slide" data-part="Current research" aria-label="Current research">
+<div class="body">
+<h2>What we are working on now</h2>
+<div class="rs">
+<div class="rc"><span class="st">Data collection underway</span><h3>GenAI in the K-12 Classroom</h3><p>A mixed-methods study of how teachers are adopting GenAI and what support they need.</p><p class="meta">Funded by a WSU University Research/Creative Projects Award (URCA)</p></div>
+<div class="rc"><span class="st">Manuscript in preparation</span><h3>Dialectics of learning with GenAI</h3><p>An autoethnography: I learned two unfamiliar finance topics with GenAI, then analyzed my own dialogues. A provisional process model:</p>
+<div class="ph"><span>Conceptual grounding</span><span>Contestation</span><span>Cumulative reconstruction</span><span>Responsible synthesis</span></div></div>
+</div>
+<div class="fel"><span class="h">Undergraduate fellows</span><div><b>Evander Davis</b>AI-assisted STEM tutoring</div><div><b>Urshitha Chakka</b>AI learning assistants grounded in course materials</div></div>
+</div>
+<aside class="notes">
+<p class="cue">About 70 seconds.</p>
+<p>Two projects are active right now. The first is GenAI in the K-12 Classroom, a mixed-methods study of how teachers are adopting GenAI and what support they need. It is funded by WSU’s URCA program, and we are collecting data now.</p>
+<p>The second is an autoethnography. I deliberately learned two financial topics I knew little about, retirement accounts and currency hedging, through conversations with GenAI, and then analyzed my own dialogues. What is emerging is a provisional four-phase model: grounding, contestation, reconstruction, and synthesis. That manuscript is in preparation.</p>
+<p>Our two undergraduate fellows also lead their own projects: Evander Davis on AI-assisted STEM tutoring, and Urshitha Chakka on AI learning assistants grounded in course materials. They present their work separately.</p>
+</aside>
+</section>
+
+<section class="slide s5" data-part="Our work in 2026" aria-label="Our work in 2026">
+<div class="body">
+<h2>Our work in 2026</h2>
+<div class="stage">
+<div class="nums bx" data-b="2">
+<div class="nm c1"><span class="big">3</span><span class="lab b" data-b="1">Published</span></div>
+<div class="nm c2"><span class="big">2</span><span class="lab b" data-b="1">Under review</span></div>
+<div class="nm c3"><span class="big">2</span><span class="lab b" data-b="1">In preparation</span></div>
+<div class="nm c4"><span class="big">10</span><span class="lab b" data-b="1">Presentations<small>incl. professional development</small></span></div>
+</div>
+<div class="full b" data-b="2">
+<div class="col">
+<h3><span class="cnt c1">3</span>Published</h3>
+<p class="pub"><b>Generative artificial intelligence as a transformative catalyst for a learning paradigm shift</b>Byun &amp; Alagic. <i>International Journal of Advanced Corporate Learning, 19</i>(2).</p>
+<p class="pub"><b>Transformative learning in the age of generative AI: Educators’ perspectives on a paradigm shift</b>Alagic &amp; Byun. In <i>Creativity and new technologies in learning for the workplace and higher education</i>. Springer.</p>
+<p class="pub"><b>A systematic review of generative AI research in mathematics education</b>Joung &amp; Byun. <i>MathAMATYC Educator, 17</i>(3), 79–93.</p>
+<p class="more"><span class="cnt c2">2</span>under review <span class="sep"></span><span class="cnt c3">2</span>in preparation</p>
+</div>
+<div class="col">
+<h3><span class="cnt c4">10</span>Presentations</h3>
+<p class="grp">Conferences</p>
+<ul class="ven">
+<li><span>Apr</span><div>AERA Annual Meeting</div></li>
+<li><span>Jun</span><div>Paris Conference on Education (virtual)</div></li>
+<li><span>Jul</span><div>SIDLIT 2026, Emporia, KS <em>×2</em></div></li>
+</ul>
+<p class="grp">Professional development</p>
+<ul class="ven">
+<li><span>Jan, May</span><div>Seoul Women’s University</div></li>
+<li><span>Apr, Jul</span><div>Konkuk University</div></li>
+<li><span>Aug</span><div>PAUA (virtual)</div></li>
+<li><span>Oct</span><div>Wichita State University</div></li>
+</ul>
+<p class="media">Also featured on <i>The Academic Minute</i> podcast (Aug).</p>
+</div>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p class="cue">About 25 seconds, two clicks.</p>
+<p>Here is 2026 in numbers.</p>
+<p>[Click] Three papers published, two under review, two in preparation, and ten presentations, including professional development sessions for faculty here at Wichita State and in Korea.</p>
+<p>[Click] And here is the full list. It is also on our website.</p>
+</aside>
+</section>
+
+<section class="slide" data-part="Get involved" aria-label="Get involved">
+<div class="body">
+<h2>Get involved</h2>
+<div class="gi">
+<div class="gc tour"><span class="k">Lab tour</span><h3>Thursday, October 8<br>3:00–4:00 p.m.<br>Ablah Space 230</h3><p>See current projects, ask questions, and meet the team.</p></div>
+<div class="gc ra"><span class="k">Research positions</span><h3>Not recruiting right now</h3><p>We plan to open funded research assistant positions if our Spencer Foundation proposal is funded. A decision is expected in January 2027.</p></div>
+<div class="gc qrc"><span class="k">Lab website</span><div class="qrw"><svg class="qr" viewBox="0 0 37 37" role="img" aria-label="QR code linking to the A2E Lab website" shape-rendering="crispEdges"><path d="M0 0h1v1h-1zM1 0h1v1h-1zM2 0h1v1h-1zM3 0h1v1h-1zM4 0h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM9 0h1v1h-1zM11 0h1v1h-1zM12 0h1v1h-1zM13 0h1v1h-1zM17 0h1v1h-1zM18 0h1v1h-1zM22 0h1v1h-1zM23 0h1v1h-1zM25 0h1v1h-1zM26 0h1v1h-1zM27 0h1v1h-1zM30 0h1v1h-1zM31 0h1v1h-1zM32 0h1v1h-1zM33 0h1v1h-1zM34 0h1v1h-1zM35 0h1v1h-1zM36 0h1v1h-1zM0 1h1v1h-1zM6 1h1v1h-1zM9 1h1v1h-1zM12 1h1v1h-1zM13 1h1v1h-1zM14 1h1v1h-1zM15 1h1v1h-1zM16 1h1v1h-1zM18 1h1v1h-1zM19 1h1v1h-1zM21 1h1v1h-1zM22 1h1v1h-1zM23 1h1v1h-1zM27 1h1v1h-1zM30 1h1v1h-1zM36 1h1v1h-1zM0 2h1v1h-1zM2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM6 2h1v1h-1zM11 2h1v1h-1zM15 2h1v1h-1zM17 2h1v1h-1zM19 2h1v1h-1zM20 2h1v1h-1zM23 2h1v1h-1zM24 2h1v1h-1zM28 2h1v1h-1zM30 2h1v1h-1zM32 2h1v1h-1zM33 2h1v1h-1zM34 2h1v1h-1zM36 2h1v1h-1zM0 3h1v1h-1zM2 3h1v1h-1zM3 3h1v1h-1zM4 3h1v1h-1zM6 3h1v1h-1zM10 3h1v1h-1zM11 3h1v1h-1zM12 3h1v1h-1zM13 3h1v1h-1zM14 3h1v1h-1zM15 3h1v1h-1zM18 3h1v1h-1zM22 3h1v1h-1zM23 3h1v1h-1zM26 3h1v1h-1zM27 3h1v1h-1zM30 3h1v1h-1zM32 3h1v1h-1zM33 3h1v1h-1zM34 3h1v1h-1zM36 3h1v1h-1zM0 4h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1zM4 4h1v1h-1zM6 4h1v1h-1zM9 4h1v1h-1zM11 4h1v1h-1zM13 4h1v1h-1zM14 4h1v1h-1zM15 4h1v1h-1zM16 4h1v1h-1zM18 4h1v1h-1zM20 4h1v1h-1zM21 4h1v1h-1zM23 4h1v1h-1zM26 4h1v1h-1zM27 4h1v1h-1zM28 4h1v1h-1zM30 4h1v1h-1zM32 4h1v1h-1zM33 4h1v1h-1zM34 4h1v1h-1zM36 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM9 5h1v1h-1zM10 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM19 5h1v1h-1zM21 5h1v1h-1zM24 5h1v1h-1zM25 5h1v1h-1zM26 5h1v1h-1zM27 5h1v1h-1zM28 5h1v1h-1zM30 5h1v1h-1zM36 5h1v1h-1zM0 6h1v1h-1zM1 6h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h1v1h-1zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h1v1h-1zM30 6h1v1h-1zM31 6h1v1h-1zM32 6h1v1h-1zM33 6h1v1h-1zM34 6h1v1h-1zM35 6h1v1h-1zM36 6h1v1h-1zM9 7h1v1h-1zM12 7h1v1h-1zM13 7h1v1h-1zM15 7h1v1h-1zM17 7h1v1h-1zM18 7h1v1h-1zM19 7h1v1h-1zM21 7h1v1h-1zM22 7h1v1h-1zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h1v1h-1zM0 8h1v1h-1zM3 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM8 8h1v1h-1zM9 8h1v1h-1zM13 8h1v1h-1zM16 8h1v1h-1zM17 8h1v1h-1zM18 8h1v1h-1zM20 8h1v1h-1zM21 8h1v1h-1zM25 8h1v1h-1zM26 8h1v1h-1zM28 8h1v1h-1zM29 8h1v1h-1zM31 8h1v1h-1zM1 9h1v1h-1zM2 9h1v1h-1zM3 9h1v1h-1zM5 9h1v1h-1zM7 9h1v1h-1zM10 9h1v1h-1zM13 9h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM17 9h1v1h-1zM18 9h1v1h-1zM19 9h1v1h-1zM21 9h1v1h-1zM22 9h1v1h-1zM24 9h1v1h-1zM28 9h1v1h-1zM29 9h1v1h-1zM30 9h1v1h-1zM33 9h1v1h-1zM36 9h1v1h-1zM1 10h1v1h-1zM2 10h1v1h-1zM6 10h1v1h-1zM9 10h1v1h-1zM10 10h1v1h-1zM12 10h1v1h-1zM13 10h1v1h-1zM14 10h1v1h-1zM15 10h1v1h-1zM19 10h1v1h-1zM21 10h1v1h-1zM24 10h1v1h-1zM25 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM29 10h1v1h-1zM30 10h1v1h-1zM33 10h1v1h-1zM34 10h1v1h-1zM35 10h1v1h-1zM36 10h1v1h-1zM0 11h1v1h-1zM1 11h1v1h-1zM2 11h1v1h-1zM5 11h1v1h-1zM7 11h1v1h-1zM9 11h1v1h-1zM11 11h1v1h-1zM12 11h1v1h-1zM13 11h1v1h-1zM16 11h1v1h-1zM18 11h1v1h-1zM19 11h1v1h-1zM20 11h1v1h-1zM21 11h1v1h-1zM22 11h1v1h-1zM23 11h1v1h-1zM24 11h1v1h-1zM25 11h1v1h-1zM28 11h1v1h-1zM29 11h1v1h-1zM30 11h1v1h-1zM1 12h1v1h-1zM2 12h1v1h-1zM3 12h1v1h-1zM5 12h1v1h-1zM6 12h1v1h-1zM7 12h1v1h-1zM9 12h1v1h-1zM10 12h1v1h-1zM13 12h1v1h-1zM15 12h1v1h-1zM16 12h1v1h-1zM17 12h1v1h-1zM21 12h1v1h-1zM23 12h1v1h-1zM24 12h1v1h-1zM25 12h1v1h-1zM27 12h1v1h-1zM28 12h1v1h-1zM29 12h1v1h-1zM30 12h1v1h-1zM31 12h1v1h-1zM33 12h1v1h-1zM35 12h1v1h-1zM36 12h1v1h-1zM2 13h1v1h-1zM3 13h1v1h-1zM4 13h1v1h-1zM5 13h1v1h-1zM11 13h1v1h-1zM19 13h1v1h-1zM20 13h1v1h-1zM21 13h1v1h-1zM22 13h1v1h-1zM26 13h1v1h-1zM30 13h1v1h-1zM31 13h1v1h-1zM34 13h1v1h-1zM36 13h1v1h-1zM0 14h1v1h-1zM3 14h1v1h-1zM4 14h1v1h-1zM5 14h1v1h-1zM6 14h1v1h-1zM10 14h1v1h-1zM12 14h1v1h-1zM13 14h1v1h-1zM20 14h1v1h-1zM22 14h1v1h-1zM23 14h1v1h-1zM25 14h1v1h-1zM26 14h1v1h-1zM30 14h1v1h-1zM31 14h1v1h-1zM32 14h1v1h-1zM34 14h1v1h-1zM36 14h1v1h-1zM1 15h1v1h-1zM3 15h1v1h-1zM4 15h1v1h-1zM8 15h1v1h-1zM10 15h1v1h-1zM14 15h1v1h-1zM15 15h1v1h-1zM21 15h1v1h-1zM23 15h1v1h-1zM24 15h1v1h-1zM25 15h1v1h-1zM26 15h1v1h-1zM27 15h1v1h-1zM30 15h1v1h-1zM32 15h1v1h-1zM36 15h1v1h-1zM0 16h1v1h-1zM2 16h1v1h-1zM3 16h1v1h-1zM4 16h1v1h-1zM6 16h1v1h-1zM9 16h1v1h-1zM11 16h1v1h-1zM12 16h1v1h-1zM13 16h1v1h-1zM15 16h1v1h-1zM16 16h1v1h-1zM19 16h1v1h-1zM20 16h1v1h-1zM24 16h1v1h-1zM27 16h1v1h-1zM29 16h1v1h-1zM30 16h1v1h-1zM31 16h1v1h-1zM33 16h1v1h-1zM34 16h1v1h-1zM35 16h1v1h-1zM0 17h1v1h-1zM2 17h1v1h-1zM7 17h1v1h-1zM9 17h1v1h-1zM10 17h1v1h-1zM12 17h1v1h-1zM15 17h1v1h-1zM19 17h1v1h-1zM21 17h1v1h-1zM23 17h1v1h-1zM25 17h1v1h-1zM26 17h1v1h-1zM29 17h1v1h-1zM30 17h1v1h-1zM32 17h1v1h-1zM35 17h1v1h-1zM36 17h1v1h-1zM0 18h1v1h-1zM3 18h1v1h-1zM5 18h1v1h-1zM6 18h1v1h-1zM7 18h1v1h-1zM9 18h1v1h-1zM10 18h1v1h-1zM13 18h1v1h-1zM14 18h1v1h-1zM19 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h1v1h-1zM29 18h1v1h-1zM30 18h1v1h-1zM34 18h1v1h-1zM35 18h1v1h-1zM36 18h1v1h-1zM0 19h1v1h-1zM1 19h1v1h-1zM5 19h1v1h-1zM7 19h1v1h-1zM11 19h1v1h-1zM14 19h1v1h-1zM15 19h1v1h-1zM16 19h1v1h-1zM17 19h1v1h-1zM19 19h1v1h-1zM20 19h1v1h-1zM21 19h1v1h-1zM28 19h1v1h-1zM30 19h1v1h-1zM34 19h1v1h-1zM35 19h1v1h-1zM0 20h1v1h-1zM1 20h1v1h-1zM5 20h1v1h-1zM6 20h1v1h-1zM8 20h1v1h-1zM10 20h1v1h-1zM12 20h1v1h-1zM13 20h1v1h-1zM14 20h1v1h-1zM16 20h1v1h-1zM19 20h1v1h-1zM21 20h1v1h-1zM23 20h1v1h-1zM25 20h1v1h-1zM26 20h1v1h-1zM28 20h1v1h-1zM30 20h1v1h-1zM32 20h1v1h-1zM35 20h1v1h-1zM1 21h1v1h-1zM2 21h1v1h-1zM4 21h1v1h-1zM5 21h1v1h-1zM8 21h1v1h-1zM9 21h1v1h-1zM10 21h1v1h-1zM11 21h1v1h-1zM12 21h1v1h-1zM16 21h1v1h-1zM17 21h1v1h-1zM18 21h1v1h-1zM20 21h1v1h-1zM24 21h1v1h-1zM25 21h1v1h-1zM28 21h1v1h-1zM30 21h1v1h-1zM31 21h1v1h-1zM33 21h1v1h-1zM35 21h1v1h-1zM36 21h1v1h-1zM0 22h1v1h-1zM1 22h1v1h-1zM2 22h1v1h-1zM4 22h1v1h-1zM6 22h1v1h-1zM10 22h1v1h-1zM13 22h1v1h-1zM14 22h1v1h-1zM18 22h1v1h-1zM19 22h1v1h-1zM21 22h1v1h-1zM22 22h1v1h-1zM24 22h1v1h-1zM25 22h1v1h-1zM28 22h1v1h-1zM30 22h1v1h-1zM36 22h1v1h-1zM0 23h1v1h-1zM2 23h1v1h-1zM3 23h1v1h-1zM5 23h1v1h-1zM7 23h1v1h-1zM9 23h1v1h-1zM10 23h1v1h-1zM12 23h1v1h-1zM15 23h1v1h-1zM16 23h1v1h-1zM18 23h1v1h-1zM19 23h1v1h-1zM20 23h1v1h-1zM24 23h1v1h-1zM25 23h1v1h-1zM28 23h1v1h-1zM30 23h1v1h-1zM36 23h1v1h-1zM0 24h1v1h-1zM2 24h1v1h-1zM6 24h1v1h-1zM7 24h1v1h-1zM8 24h1v1h-1zM10 24h1v1h-1zM12 24h1v1h-1zM14 24h1v1h-1zM16 24h1v1h-1zM18 24h1v1h-1zM19 24h1v1h-1zM24 24h1v1h-1zM25 24h1v1h-1zM29 24h1v1h-1zM30 24h1v1h-1zM31 24h1v1h-1zM33 24h1v1h-1zM35 24h1v1h-1zM2 25h1v1h-1zM7 25h1v1h-1zM9 25h1v1h-1zM10 25h1v1h-1zM11 25h1v1h-1zM15 25h1v1h-1zM17 25h1v1h-1zM18 25h1v1h-1zM21 25h1v1h-1zM22 25h1v1h-1zM24 25h1v1h-1zM29 25h1v1h-1zM30 25h1v1h-1zM31 25h1v1h-1zM35 25h1v1h-1zM36 25h1v1h-1zM0 26h1v1h-1zM2 26h1v1h-1zM5 26h1v1h-1zM6 26h1v1h-1zM7 26h1v1h-1zM9 26h1v1h-1zM11 26h1v1h-1zM13 26h1v1h-1zM15 26h1v1h-1zM16 26h1v1h-1zM17 26h1v1h-1zM20 26h1v1h-1zM23 26h1v1h-1zM30 26h1v1h-1zM34 26h1v1h-1zM36 26h1v1h-1zM1 27h1v1h-1zM2 27h1v1h-1zM4 27h1v1h-1zM7 27h1v1h-1zM9 27h1v1h-1zM10 27h1v1h-1zM11 27h1v1h-1zM13 27h1v1h-1zM14 27h1v1h-1zM16 27h1v1h-1zM17 27h1v1h-1zM18 27h1v1h-1zM19 27h1v1h-1zM21 27h1v1h-1zM23 27h1v1h-1zM25 27h1v1h-1zM26 27h1v1h-1zM27 27h1v1h-1zM28 27h1v1h-1zM30 27h1v1h-1zM31 27h1v1h-1zM33 27h1v1h-1zM0 28h1v1h-1zM1 28h1v1h-1zM2 28h1v1h-1zM3 28h1v1h-1zM5 28h1v1h-1zM6 28h1v1h-1zM9 28h1v1h-1zM14 28h1v1h-1zM15 28h1v1h-1zM16 28h1v1h-1zM17 28h1v1h-1zM19 28h1v1h-1zM20 28h1v1h-1zM21 28h1v1h-1zM22 28h1v1h-1zM24 28h1v1h-1zM26 28h1v1h-1zM27 28h1v1h-1zM28 28h1v1h-1zM29 28h1v1h-1zM30 28h1v1h-1zM31 28h1v1h-1zM32 28h1v1h-1zM34 28h1v1h-1zM35 28h1v1h-1zM36 28h1v1h-1zM8 29h1v1h-1zM10 29h1v1h-1zM11 29h1v1h-1zM14 29h1v1h-1zM16 29h1v1h-1zM17 29h1v1h-1zM21 29h1v1h-1zM23 29h1v1h-1zM24 29h1v1h-1zM26 29h1v1h-1zM28 29h1v1h-1zM32 29h1v1h-1zM33 29h1v1h-1zM36 29h1v1h-1zM0 30h1v1h-1zM1 30h1v1h-1zM2 30h1v1h-1zM3 30h1v1h-1zM4 30h1v1h-1zM5 30h1v1h-1zM6 30h1v1h-1zM10 30h1v1h-1zM11 30h1v1h-1zM13 30h1v1h-1zM17 30h1v1h-1zM22 30h1v1h-1zM25 30h1v1h-1zM27 30h1v1h-1zM28 30h1v1h-1zM30 30h1v1h-1zM32 30h1v1h-1zM33 30h1v1h-1zM35 30h1v1h-1zM36 30h1v1h-1zM0 31h1v1h-1zM6 31h1v1h-1zM8 31h1v1h-1zM9 31h1v1h-1zM11 31h1v1h-1zM13 31h1v1h-1zM14 31h1v1h-1zM15 31h1v1h-1zM16 31h1v1h-1zM20 31h1v1h-1zM21 31h1v1h-1zM23 31h1v1h-1zM24 31h1v1h-1zM28 31h1v1h-1zM32 31h1v1h-1zM33 31h1v1h-1zM34 31h1v1h-1zM36 31h1v1h-1zM0 32h1v1h-1zM2 32h1v1h-1zM3 32h1v1h-1zM4 32h1v1h-1zM6 32h1v1h-1zM9 32h1v1h-1zM10 32h1v1h-1zM12 32h1v1h-1zM13 32h1v1h-1zM14 32h1v1h-1zM17 32h1v1h-1zM19 32h1v1h-1zM22 32h1v1h-1zM23 32h1v1h-1zM24 32h1v1h-1zM25 32h1v1h-1zM26 32h1v1h-1zM28 32h1v1h-1zM29 32h1v1h-1zM30 32h1v1h-1zM31 32h1v1h-1zM32 32h1v1h-1zM33 32h1v1h-1zM0 33h1v1h-1zM2 33h1v1h-1zM3 33h1v1h-1zM4 33h1v1h-1zM6 33h1v1h-1zM8 33h1v1h-1zM10 33h1v1h-1zM11 33h1v1h-1zM13 33h1v1h-1zM14 33h1v1h-1zM15 33h1v1h-1zM17 33h1v1h-1zM19 33h1v1h-1zM20 33h1v1h-1zM21 33h1v1h-1zM22 33h1v1h-1zM24 33h1v1h-1zM27 33h1v1h-1zM28 33h1v1h-1zM29 33h1v1h-1zM31 33h1v1h-1zM32 33h1v1h-1zM34 33h1v1h-1zM35 33h1v1h-1zM0 34h1v1h-1zM2 34h1v1h-1zM3 34h1v1h-1zM4 34h1v1h-1zM6 34h1v1h-1zM9 34h1v1h-1zM10 34h1v1h-1zM11 34h1v1h-1zM12 34h1v1h-1zM13 34h1v1h-1zM14 34h1v1h-1zM16 34h1v1h-1zM17 34h1v1h-1zM18 34h1v1h-1zM20 34h1v1h-1zM22 34h1v1h-1zM24 34h1v1h-1zM27 34h1v1h-1zM28 34h1v1h-1zM31 34h1v1h-1zM32 34h1v1h-1zM33 34h1v1h-1zM34 34h1v1h-1zM35 34h1v1h-1zM36 34h1v1h-1zM0 35h1v1h-1zM6 35h1v1h-1zM10 35h1v1h-1zM12 35h1v1h-1zM13 35h1v1h-1zM15 35h1v1h-1zM18 35h1v1h-1zM21 35h1v1h-1zM22 35h1v1h-1zM24 35h1v1h-1zM25 35h1v1h-1zM26 35h1v1h-1zM27 35h1v1h-1zM28 35h1v1h-1zM31 35h1v1h-1zM0 36h1v1h-1zM1 36h1v1h-1zM2 36h1v1h-1zM3 36h1v1h-1zM4 36h1v1h-1zM5 36h1v1h-1zM6 36h1v1h-1zM8 36h1v1h-1zM10 36h1v1h-1zM13 36h1v1h-1zM16 36h1v1h-1zM17 36h1v1h-1zM19 36h1v1h-1zM20 36h1v1h-1zM21 36h1v1h-1zM23 36h1v1h-1zM24 36h1v1h-1zM25 36h1v1h-1zM27 36h1v1h-1zM28 36h1v1h-1zM29 36h1v1h-1zM30 36h1v1h-1zM33 36h1v1h-1zM34 36h1v1h-1zM35 36h1v1h-1zM36 36h1v1h-1z" fill="#141D29"/></svg></div><p><b>jaehwan.byun<wbr>@wichita.edu</b></p></div>
+</div>
+<p class="thanks">Thank you.</p>
+</div>
+<aside class="notes">
+<p class="cue">About 45 seconds.</p>
+<p>How can you get involved? First, come to our lab tour on Thursday, October 8, from 3 to 4 p.m., in Ablah Space 230. You’ll see current projects and can ask anything.</p>
+<p>Second, about research positions: we are not recruiting right now. If our Spencer Foundation proposal is funded, and we expect that decision in January, we plan to open research assistant positions.</p>
+<p>Scan the code for our website, or email me. Thank you.</p>
+</aside>
+</section>
+
+<footer class="foot" id="foot"><span class="fp" id="fp"></span><div class="track" id="track"></div><span class="fn" id="fn"></span></footer>
+</div>
+</div>
+<div class="ctl" id="ctl"><button id="bp" type="button">Previous</button><button id="bn" type="button">Next</button><button id="bf" type="button">Full screen</button><button id="bs" type="button">Presenter view</button></div>
+<div class="hint" id="hint">Click anywhere on the slide to advance; right-click to go back. Arrow keys and clickers also work. F: full screen. T: light or dark. S: presenter view.</div>
+<div class="pv" id="pv" aria-label="Presenter view">
+<div class="pv-bar"><span class="pv-t"><b id="pvTime">00:00</b>elapsed</span><button id="pvReset" type="button">Reset timer</button><span id="pvClock"></span></div>
+<div class="pv-meta"><span id="pvCount"></span><span id="pvClicks"></span></div>
+<div class="pv-nav"><button id="pvGoPrev" type="button">← Previous</button><button id="pvGoNext" type="button">Next →</button></div>
+<div class="pv-next" id="pvNext"><span class="lbl" id="pvNextLbl">Next slide</span></div>
+<div class="pv-notes" id="pvNotes"></div>
+</div>
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+var vp=$('vp'),deck=$('deck'),foot=$('foot'),fp=$('fp'),fn=$('fn'),track=$('track'),ctl=$('ctl'),hint=$('hint');
+var pvNext=$('pvNext'),pvNotes=$('pvNotes'),pvTime=$('pvTime'),pvClock=$('pvClock'),pvCount=$('pvCount'),pvClicks=$('pvClicks'),pvLbl=$('pvNextLbl');
+var slides=Array.prototype.slice.call(deck.querySelectorAll('.slide')),i=0,b=0;
+var PLAN=[['Opening',1],['Vision and mission',1],['Research questions',1],['Current research',1],['Our work in 2026',1],['Get involved',1]];
+track.innerHTML=PLAN.map(function(p){return '<i style="flex:'+p[1]+'"></i>'}).join('');
+try{var t=localStorage.getItem('a2e-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}
+var myId=Math.random().toString(36).slice(2),seq=0,lastSeq={},applying=true,popup=null,bc=null,nextDeck=null,t0=Date.now(),timer=null;
+
+function fit(){var w=vp.clientWidth,h=vp.clientHeight,s=Math.min(w/1600,h/900);deck.style.transform='translate('+(w-1600*s)/2+'px,'+(h-900*s)/2+'px) scale('+s+')'}
+function steps(k){var set={};Array.prototype.forEach.call(slides[k].querySelectorAll('[data-b]'),function(e){set[e.getAttribute('data-b')]=1});return Object.keys(set).map(Number).sort(function(x,y){return x-y})}
+function paint(){var st=steps(i);Array.prototype.forEach.call(slides[i].querySelectorAll('[data-b]'),function(e){var on=st.indexOf(+e.getAttribute('data-b'))<b;if(e.classList.contains('bx'))e.classList.toggle('out',on);else e.classList.toggle('in',on)})}
+function updateFoot(){var part=slides[i].getAttribute('data-part'),idx=-1;PLAN.forEach(function(p,k){if(p[0]===part)idx=k});Array.prototype.forEach.call(track.children,function(e,k){e.className=k<idx?'done':(k===idx?'cur':'')});fp.textContent=part;fn.textContent=i+1;foot.classList.toggle('hide',slides[i].hasAttribute('data-nofoot'))}
+function render(k,full){i=Math.max(0,Math.min(slides.length-1,k));slides.forEach(function(s,j){s.classList.toggle('on',j===i);s.setAttribute('aria-hidden',j===i?'false':'true')});b=full?steps(i).length:0;paint();updateFoot();try{history.replaceState(null,'','#'+(i+1))}catch(e){}}
+function changed(){updatePresenter();if(!applying)send({t:'state',i:i,b:b})}
+function show(k,full){render(k,full);changed()}
+function next(){if(b<steps(i).length){b++;paint()}else if(i<slides.length-1){render(i+1,false)}changed()}
+function prev(){if(b>0){b--;paint()}else if(i>0){render(i-1,true)}changed()}
+
+/* two-window sync: postMessage between opener and popup, BroadcastChannel and storage events for separately opened windows */
+function send(m){m.src=myId;m.seq=++seq;
+ try{if(bc)bc.postMessage(m)}catch(e){}
+ try{if(window.opener&&!window.opener.closed)window.opener.postMessage(m,'*')}catch(e){}
+ try{if(popup&&!popup.closed)popup.postMessage(m,'*')}catch(e){}
+ try{localStorage.setItem('a2e-deck-sync',JSON.stringify(m))}catch(e){}}
+function receive(m){if(!m||typeof m!=='object'||!m.t||!m.src||m.src===myId)return;
+ if(lastSeq[m.src]!==undefined&&m.seq<=lastSeq[m.src])return;lastSeq[m.src]=m.seq;
+ if(m.t==='hello'){send({t:'state',i:i,b:b});return}
+ if(m.t==='state'&&typeof m.i==='number'){applying=true;if(m.i!==i)render(m.i,false);b=Math.max(0,Math.min(steps(i).length,m.b|0));paint();updatePresenter();applying=false}}
+try{bc=new BroadcastChannel('a2e-deck-sync');bc.onmessage=function(e){receive(e.data)}}catch(e){}
+window.addEventListener('message',function(e){receive(e.data)});
+window.addEventListener('storage',function(e){if(e.key==='a2e-deck-sync'&&e.newValue){try{receive(JSON.parse(e.newValue))}catch(_){}}});
+
+/* presenter view */
+function cloneForNext(){if(nextDeck)nextDeck.remove();nextDeck=deck.cloneNode(true);nextDeck.removeAttribute('id');
+ var f=nextDeck.querySelector('.foot');if(f)f.remove();
+ var map={};Array.prototype.forEach.call(nextDeck.querySelectorAll('[id]'),function(e){map[e.id]=e.id+'-nx';e.id=e.id+'-nx'});
+ Array.prototype.forEach.call(nextDeck.querySelectorAll('*'),function(e){for(var a=0;a<e.attributes.length;a++){var at=e.attributes[a];if(at.value.indexOf('url(#')>=0){e.setAttribute(at.name,at.value.replace(/url\(#([^)]+)\)/g,function(m,id){return map[id]?'url(#'+map[id]+')':m}))}}});
+ Array.prototype.forEach.call(nextDeck.querySelectorAll('.b'),function(e){e.classList.add('in')});
+ Array.prototype.forEach.call(nextDeck.querySelectorAll('.bx'),function(e){e.classList.add('out')});
+ Array.prototype.forEach.call(nextDeck.querySelectorAll('.slide'),function(s){s.classList.remove('on');s.setAttribute('aria-hidden','true')});
+ pvNext.appendChild(nextDeck);fitNext()}
+function fitNext(){if(!nextDeck)return;var w=pvNext.clientWidth,h=pvNext.clientHeight,s=Math.min(w/1600,h/900);nextDeck.style.transform='translate('+(w-1600*s)/2+'px,'+(h-900*s)/2+'px) scale('+s+')'}
+function updatePresenter(){if(!document.body.classList.contains('presenter'))return;
+ var ns=nextDeck?nextDeck.querySelectorAll('.slide'):[],n=i+1;
+ Array.prototype.forEach.call(ns,function(s,j){s.classList.toggle('on',j===n)});
+ pvLbl.textContent=n<slides.length?'Next slide: '+(n+1):'End of deck';
+ if(updatePresenter.slide!==i){var note=slides[i].querySelector('aside.notes');
+  pvNotes.innerHTML=note?note.innerHTML:'<p class="cue">No notes for this slide yet.</p>';updatePresenter.slide=i}
+ var cues=Array.prototype.filter.call(pvNotes.querySelectorAll('p.cue'),function(p){return /^Click/.test(p.textContent)});
+ cues.forEach(function(c,k){c.classList.toggle('now',k===b-1)});
+ pvNotes.scrollTop=(b>0&&cues[b-1])?Math.max(0,cues[b-1].offsetTop-8):0;
+ pvCount.innerHTML='Slide <b>'+(i+1)+'</b> of '+slides.length;
+ var st=steps(i).length;pvClicks.textContent=st?('Clicks on this slide: '+b+' of '+st):'No clicks on this slide'}
+function pad(x){return (x<10?'0':'')+x}
+function tick(){var s=Math.floor((Date.now()-t0)/1000);pvTime.textContent=pad(Math.floor(s/60))+':'+pad(s%60);var d=new Date();pvClock.textContent=d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}
+function enterPresenter(){document.body.classList.add('presenter');if(!nextDeck)cloneForNext();if(!timer){t0=Date.now();timer=setInterval(tick,500)}tick();fit();fitNext();updatePresenter()}
+function exitPresenter(){document.body.classList.remove('presenter');fit()}
+function togglePresenter(){if(document.body.classList.contains('presenter'))exitPresenter();else enterPresenter()}
+function say(msg){hint.textContent=msg;hint.classList.remove('off');clearTimeout(say.t);say.t=setTimeout(function(){hint.classList.add('off')},12000)}
+function openPresenter(){var framed=true;try{framed=window.top!==window.self}catch(e){framed=true}
+ if(!framed){var w=null;try{w=window.open(location.href,'a2e-deck-presenter','width=1400,height=840')}catch(e){}
+  if(w){popup=w;try{w.focus()}catch(e){}return}}
+ say('In this viewer, open the same link in a second window, click the slide there, and press P. The two windows stay in sync.')}
+
+function full(){var d=document,el=d.documentElement,r;try{if(!(d.fullscreenElement||d.webkitFullscreenElement)){r=(el.requestFullscreen||el.webkitRequestFullscreen).call(el)}else{r=(d.exitFullscreen||d.webkitExitFullscreen).call(d)}if(r&&r.catch)r.catch(function(){})}catch(e){}}
+function theme(){var el=document.documentElement,n=el.getAttribute('data-theme')==='dark'?'light':'dark';el.setAttribute('data-theme',n);try{localStorage.setItem('a2e-theme',n)}catch(e){}}
+function hideHint(){hint.classList.add('off')}
+document.addEventListener('keydown',function(e){if(e.altKey||e.ctrlKey||e.metaKey)return;var k=e.key;
+ if(k==='ArrowRight'||k==='ArrowDown'||k==='PageDown'||k===' '||k==='Enter'){e.preventDefault();next();hideHint()}
+ else if(k==='ArrowLeft'||k==='ArrowUp'||k==='PageUp'||k==='Backspace'){e.preventDefault();prev();hideHint()}
+ else if(k==='Home'){e.preventDefault();show(0,false)}else if(k==='End'){e.preventDefault();show(slides.length-1,true)}
+ else if(k==='f'||k==='F'){full();hideHint()}else if(k==='t'||k==='T'){theme()}
+ else if(k==='s'||k==='S'){openPresenter();hideHint()}else if(k==='p'||k==='P'){togglePresenter();hideHint()}});
+$('bn').onclick=function(){next();vp.focus()};
+$('bp').onclick=function(){prev();vp.focus()};
+$('bf').onclick=function(){full();vp.focus()};
+$('bs').onclick=function(){openPresenter();vp.focus()};
+$('pvReset').onclick=function(){t0=Date.now();tick()};
+$('pvGoPrev').onclick=function(){prev();vp.focus()};
+$('pvGoNext').onclick=function(){next();vp.focus()};
+vp.addEventListener('click',function(e){vp.focus();if(e.button!==0)return;if(e.shiftKey)prev();else next();hideHint()});
+vp.addEventListener('contextmenu',function(e){e.preventDefault();prev();hideHint()});
+var ht;document.addEventListener('mousemove',function(){ctl.classList.add('show');clearTimeout(ht);ht=setTimeout(function(){ctl.classList.remove('show')},2200)});
+var tx=null;vp.addEventListener('touchstart',function(e){tx=e.touches[0].clientX},{passive:true});
+vp.addEventListener('touchend',function(e){if(tx===null)return;var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){dx<0?next():prev()}tx=null},{passive:true});
+window.addEventListener('resize',function(){fit();fitNext()});
+if(window.ResizeObserver){new ResizeObserver(fit).observe(vp);new ResizeObserver(fitNext).observe(pvNext)}
+
+fit();var hs=parseInt((location.hash||'').slice(1),10);render(hs>0?hs-1:0,hs>0);
+if(window.name==='a2e-deck-presenter'){enterPresenter();applying=false;send({t:'hello'})}else{applying=false}
+setTimeout(hideHint,7000);vp.focus();
+window.deckGo=function(k,f){show(k,f)};
+window.deckState=function(){return {i:i,b:b,presenter:document.body.classList.contains('presenter')}};
+})();
+</script>
+<script>(function(){var s=document.querySelector('.s1'),c=s&&s.querySelector('.cover');if(!c)return;function chk(){if(!s.classList.contains('on'))c.classList.add('done')}chk();new MutationObserver(chk).observe(s,{attributes:true,attributeFilter:['class']})})();</script>
+</body></html>
